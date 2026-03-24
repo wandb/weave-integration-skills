@@ -32,11 +32,10 @@ Phase 3: Review ⏸ APPROVAL GATE 2
   └─ Ask: "Approve this plan for implementation?"
   └─ Do NOT proceed without explicit approval
 
-Phase 4: Apply Changes                         → transformation-patterns.md
+Phase 4: Apply Changes                         → official docs + transformation-patterns.md
   └─ Add weave.init() at the app entrypoint
   └─ Decorate checked functions with @weave.op()
   └─ Convert checked classes to weave.Model
-  └─ Wire evaluation logic into weave.Evaluation
 
 Phase 5: Validation                            → integration-checklist.md
   └─ Run integration checklist (setup, tracing, models, eval)
@@ -57,10 +56,10 @@ skills/weave-integration/
 ├── evals/
 │   └── evals.json                          # Test cases for skill trigger evaluation
 └── references/
-    ├── codebase-analysis.md                # Scanning projects + weave.init() placement
+    ├── codebase-analysis.md                # Scan guide, evolve vs fresh logic, checkbox criteria
     ├── weave-instrumentation-template.md   # Template for weave_instrumentation.md plan file
-    ├── transformation-patterns.md          # Before/after patterns (tracing, models, eval, prompts)
-    └── integration-checklist.md            # Pre/post integration validation
+    ├── transformation-patterns.md          # Model conversion patterns (class → weave.Model)
+    └── integration-checklist.md            # Post-integration validation checklist
 ```
 
 ## Prerequisites
@@ -72,6 +71,10 @@ skills/weave-integration/
 ## Installation
 
 ```bash
+# Clone the repo
+git clone https://github.com/wandb/weave-integration-skills-hackathon.git
+cd weave-integration-skills-hackathon
+
 # Claude Code
 cp -r skills/weave-integration/ ~/.claude/skills/weave-integration/
 
