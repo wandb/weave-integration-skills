@@ -39,6 +39,21 @@ Search for the app's entry point — this is where `weave.init()` will be placed
 | CLI tool | `@click.command()`, `argparse`, `typer.run()` |
 | Notebook | First code cell |
 
+### `weave.init()` Placement by Framework
+
+| Framework | Where to place `weave.init()` |
+|-----------|-------------------------------|
+| Script | First line inside `main()` |
+| FastAPI | Inside `lifespan` async context manager (not module level) |
+| Streamlit | Top of script, before any `st.*` calls |
+| Flask | After `app = Flask(__name__)` |
+| Django | In `settings.py` or `wsgi.py`/`asgi.py` |
+| CLI | First line inside the command function |
+| Notebook | First code cell |
+| Agent frameworks | Before any framework code — just `weave.init()` + auto-patching |
+
+**Note**: OpenAI Agents SDK requires an extra step: `set_trace_processors([WeaveTracingProcessor()])` after `weave.init()`.
+
 ## Step 2: Detect LLM Provider Usage
 
 Search for these import patterns to identify which LLM providers are used:
@@ -70,39 +85,43 @@ from google.adk import ...  # Google ADK
 from claude_agent_sdk import ...  # Claude Agent SDK
 ```
 
-## Step 3: Identify Functions to Trace
+## Step 3: Identify ALL Functions to Trace
 
-Look for functions that should get `@weave.op()`:
+**Trace-first approach**: List every function that could be traced. Do not pre-filter or skip. The AI recommends defaults, the user decides what to exclude.
 
-### High priority — functions that call LLMs directly
+Scan for all functions and methods in the project, categorize them:
+
+### LLM-calling functions (recommend: checked)
 ```python
-# Pattern: function body contains LLM API calls
-def generate_response(prompt):          # → @weave.op()
+def generate_response(prompt):          # → [x] @weave.op()
     return client.chat.completions.create(...)
 
-async def ask_claude(question):         # → @weave.op()
+async def ask_claude(question):         # → [x] @weave.op()
     return await anthropic_client.messages.create(...)
 ```
 
-### Medium priority — pipeline/processing functions
+### Pipeline/orchestration functions (recommend: checked)
 ```python
-# Pattern: orchestration functions that combine multiple steps
-def rag_pipeline(query):               # → @weave.op()
+def rag_pipeline(query):               # → [x] @weave.op()
     context = retrieve(query)
     return generate(query, context)
 
-def process_document(doc):             # → @weave.op()
+def process_document(doc):             # → [x] @weave.op()
     chunks = split(doc)
     embeddings = embed(chunks)
     return store(embeddings)
 ```
 
-### Low priority — utility functions
+### Tool/helper functions (recommend: unchecked, but listed)
 ```python
-# Pattern: pure data transforms (usually skip unless full tracing desired)
-def clean_text(text):                  # skip unless user wants full tracing
+def clean_text(text):                  # → [ ] @weave.op() — available if user wants
     return text.strip().lower()
+
+def format_output(data):              # → [ ] @weave.op() — pure formatting
+    return json.dumps(data, indent=2)
 ```
+
+**Key**: List all of them in `weave_instrumentation.md` with checkboxes. AI pre-checks recommended ones, leaves others unchecked for the user to opt in.
 
 ## Step 4: Identify Model Classes
 
@@ -164,37 +183,24 @@ messages = [
 TEMPLATE = "Given {context}, answer {question}"        # → weave.StringPrompt with params
 ```
 
-## Step 7: Present Analysis Results
+## Step 7: Create `weave_instrumentation.md`
 
-Format your findings as a structured summary:
+Use `references/weave-instrumentation-template.md` to create `weave_instrumentation.md` in the project root.
 
+Fill in all sections from the analysis. For the trace map:
+- **`[x]`** = AI recommends tracing (LLM calls, pipelines, important methods)
+- **`[ ]`** = available but not recommended by default (utilities, formatters)
+
+Example trace tree:
+
+```text
+- [x] `api/rag.py` — `rag_pipeline()` — orchestration function
+  - [x] `api/rag.py` — `retrieve_context()` — retrieval step
+    - [x] OpenAI Embeddings API (auto-patched)
+  - [x] `api/chat.py` — `generate_response()` — direct OpenAI call
+    - [x] OpenAI Chat API (auto-patched)
+  - [ ] `api/utils.py` — `format_output()` — pure formatting
+- [x] `models/chatbot.py` — `ChatBot` — weave.Model candidate
 ```
-## Codebase Analysis Results
 
-**Entrypoint**: `app.py` (FastAPI app)
-**LLM Providers**: OpenAI (auto-patched), Anthropic (auto-patched)
-**Framework**: FastAPI
-**Existing Weave Usage**: None / Already has weave.init() in app.py, 3 functions traced
-
-### Functions to trace (N found)
-| File | Line | Function | Priority | Reason |
-|------|------|----------|----------|--------|
-| `api/chat.py` | 15 | `generate_response()` | High | Direct OpenAI call |
-| `api/rag.py` | 32 | `rag_pipeline()` | High | Orchestration function |
-| `api/rag.py` | 10 | `retrieve_context()` | Medium | Retrieval step |
-
-### Model candidates (N found)
-| File | Line | Class | Main method |
-|------|------|-------|-------------|
-| `models/chatbot.py` | 8 | `ChatBot` | `generate()` → `predict()` |
-
-### Evaluation candidates (N found)
-| File | Description |
-|------|-------------|
-| `tests/test_quality.py` | Has input-output pairs + scoring |
-
-### Prompts to version (N found)
-| File | Line | Current form |
-|------|------|-------------|
-| `models/chatbot.py` | 5 | `SYSTEM_PROMPT = "You are..."` |
-```
+The user reviews checkboxes and approves before any code changes.

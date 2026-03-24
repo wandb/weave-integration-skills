@@ -1,0 +1,186 @@
+[
+  {
+    "query": "Add Weave to my existing LLM application",
+    "should_trigger": true,
+    "expected": ["weave_instrumentation.md", "trace map", "weave.init"]
+  },
+  {
+    "query": "Apply Weave to my app",
+    "should_trigger": true,
+    "expected": ["weave_instrumentation.md", "trace map", "weave.init"]
+  },
+  {
+    "query": "Integrate Weave tracing into my current project",
+    "should_trigger": true,
+    "expected": ["scan", "@weave.op", "weave.init"]
+  },
+  {
+    "query": "I want to integrate Weave into my existing project",
+    "should_trigger": true,
+    "expected": ["weave_instrumentation.md", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Instrument my FastAPI app with Weave observability",
+    "should_trigger": true,
+    "expected": ["weave.init", "lifespan", "@weave.op", "FastAPI"]
+  },
+  {
+    "query": "Add Weave to my LangChain app",
+    "should_trigger": true,
+    "expected": ["weave.init", "langchain", "auto-patch"]
+  },
+  {
+    "query": "I have an existing RAG pipeline, add Weave tracing to it",
+    "should_trigger": true,
+    "expected": ["@weave.op", "weave.init", "trace map"]
+  },
+  {
+    "query": "Convert my model class to use weave.Model",
+    "should_trigger": true,
+    "expected": ["weave.Model", "predict", "type annotations"]
+  },
+  {
+    "query": "I want to convert my existing eval code to Weave Evaluation",
+    "should_trigger": true,
+    "expected": ["weave.Evaluation", "weave.Dataset", "scorer"]
+  },
+  {
+    "query": "Set up Weave in my CrewAI agent project",
+    "should_trigger": true,
+    "expected": ["weave.init", "crewai", "auto-patch"]
+  },
+  {
+    "query": "Help me retrofit Weave into my production chatbot",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op", "weave_instrumentation.md"]
+  },
+  {
+    "query": "Add Weave monitoring to my Streamlit app",
+    "should_trigger": true,
+    "expected": ["weave.init", "streamlit"]
+  },
+  {
+    "query": "I want to add observability to my existing OpenAI calls",
+    "should_trigger": true,
+    "expected": ["weave.init", "auto-patch", "openai"]
+  },
+  {
+    "query": "Hook Weave into my existing code",
+    "should_trigger": true,
+    "expected": ["weave_instrumentation.md", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Add Weave to my Django app that uses Anthropic",
+    "should_trigger": true,
+    "expected": ["weave.init", "django", "anthropic"]
+  },
+  {
+    "query": "Set up Weave in my OpenAI Agents SDK project",
+    "should_trigger": true,
+    "expected": ["weave.init", "WeaveTracingProcessor", "set_trace_processors"]
+  },
+  {
+    "query": "Onboard my team's app to Weave",
+    "should_trigger": true,
+    "expected": ["weave.init", "weave_instrumentation.md"]
+  },
+  {
+    "query": "Add Weave to my DSPy pipeline",
+    "should_trigger": true,
+    "expected": ["weave.init", "dspy", "auto-patch"]
+  },
+  {
+    "query": "I want to trace my CrewAI agent calls with Weave",
+    "should_trigger": true,
+    "expected": ["weave.init", "crewai"]
+  },
+  {
+    "query": "Track my LangChain agent calls with observability",
+    "should_trigger": true,
+    "expected": ["weave.init", "langchain"]
+  },
+  {
+    "query": "I want to trace the latency of each step in my RAG pipeline",
+    "should_trigger": true,
+    "expected": ["@weave.op", "trace map"]
+  },
+  {
+    "query": "Add Weave tracing to my LLM application",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op", "trace map"]
+  },
+  {
+    "query": "I want to trace my functions with weave.op",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op"]
+  },
+  {
+    "query": "How do I auto-trace OpenAI API calls with Weave?",
+    "should_trigger": true,
+    "expected": ["weave.init", "openai", "auto-patch"]
+  },
+  {
+    "query": "How do I deploy a Flask app on AWS?",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me set up LangSmith tracing for my LLM app",
+    "should_trigger": false
+  },
+  {
+    "query": "Track my training experiments with wandb.init",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a Python unit test with pytest",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a React dashboard for data visualization",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up MLflow model registry",
+    "should_trigger": false
+  },
+  {
+    "query": "Build an LLM-as-judge scorer from scratch",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a custom Weave scorer function",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a versioned dataset from my JSON data",
+    "should_trigger": false
+  },
+  {
+    "query": "What is weave.op?",
+    "should_trigger": false
+  },
+  {
+    "query": "How do evaluations work in Weave?",
+    "should_trigger": false
+  },
+  {
+    "query": "Collect user feedback on LLM responses",
+    "should_trigger": false
+  },
+  {
+    "query": "Track and calculate my LLM API costs",
+    "should_trigger": false
+  },
+  {
+    "query": "Version my system prompts with Weave",
+    "should_trigger": false
+  },
+  {
+    "query": "Add PII detection to block sensitive information",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up a production monitor for my LLM",
+    "should_trigger": false
+  }
+]
