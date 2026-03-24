@@ -12,6 +12,37 @@ One skill that handles three modes:
 | **Integration** | Add Weave to an existing codebase | "Add Weave to my existing app", "Instrument my FastAPI app with Weave" |
 | **Guide** | Answer Weave concept/usage questions | "What is weave.op?", "How do evaluations work?" |
 
+## Integration Mode: How It Works
+
+The Integration mode follows a strict 5-phase workflow to safely add Weave to existing codebases:
+
+```
+Phase 0: Project Setup
+  └─ Ask for Weave project name (team/project format)
+
+Phase 1: Codebase Analysis                    → codebase-analysis.md, framework-specific.md
+  └─ Scan for LLM calls, model classes, eval logic, prompts
+  └─ Detect frameworks (FastAPI, LangChain, CrewAI, etc.)
+  └─ Check if Weave is already partially integrated
+
+Phase 2: Integration Plan
+  └─ Present structured plan of all proposed changes
+  └─ ⏸ Wait for user approval before touching any code
+
+Phase 3: Apply Changes                        → tracing-integration.md
+  └─ Add weave.init() at the app entrypoint     → framework-specific.md
+  └─ Decorate functions with @weave.op()         → tracing-integration.md
+  └─ Convert model classes to weave.Model        → model-conversion.md
+  └─ Wire evaluation logic into weave.Evaluation → evaluation-integration.md
+  └─ Extract hardcoded prompts                   → prompt-versioning.md
+
+Phase 4: Validation                            → integration-checklist.md
+  └─ Run integration checklist (setup, tracing, models, eval)
+  └─ Verify no regressions — Weave only observes, never changes app behavior
+```
+
+Key principle: **no code is modified without presenting a plan first**.
+
 ## Features
 
 | Feature | Description |
