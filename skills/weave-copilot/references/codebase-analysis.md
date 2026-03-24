@@ -2,6 +2,29 @@
 
 How to scan an existing project and identify Weave integration points.
 
+## Step 0: Check for Existing Weave Usage
+
+Before scanning for new integration points, check if Weave is already in use:
+
+```
+# Search for these patterns:
+import weave
+weave.init(
+@weave.op
+weave.Model
+weave.Evaluation
+weave.Dataset
+weave.publish
+```
+
+**If Weave is already present (Evolve scenario)**:
+- Do NOT add another `weave.init()` — verify the existing one is correct
+- Do NOT re-convert classes that already extend `weave.Model`
+- Focus on what's MISSING: untraced functions, unconverted classes, missing evaluations, etc.
+- Report what's already integrated and what can be added
+
+**If no Weave found (Fresh integration)**: proceed with full analysis below.
+
 ## Step 1: Find the Entrypoint
 
 Search for the app's entry point — this is where `weave.init()` will be placed.
@@ -30,6 +53,8 @@ import mistralai
 import groq
 from google import generativeai / import google.generativeai
 import boto3  # check for bedrock-runtime usage
+from cerebras.cloud import sdk  # Cerebras
+import together  # Together AI
 
 # Agent frameworks (auto-patched by Weave)
 from langchain import ... / from langchain_openai import ...
@@ -42,6 +67,7 @@ from autogen import ...
 from smolagents import ...
 from agents import ...  # OpenAI Agents SDK
 from google.adk import ...  # Google ADK
+from claude_agent_sdk import ...  # Claude Agent SDK
 ```
 
 ## Step 3: Identify Functions to Trace
@@ -148,6 +174,7 @@ Format your findings as a structured summary:
 **Entrypoint**: `app.py` (FastAPI app)
 **LLM Providers**: OpenAI (auto-patched), Anthropic (auto-patched)
 **Framework**: FastAPI
+**Existing Weave Usage**: None / Already has weave.init() in app.py, 3 functions traced
 
 ### Functions to trace (N found)
 | File | Line | Function | Priority | Reason |

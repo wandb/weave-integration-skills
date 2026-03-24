@@ -5,7 +5,7 @@
     "expected": ["weave.init", "@weave.op"]
   },
   {
-    "query": "weave.op으로 내 함수 추적하고 싶어",
+    "query": "I want to trace my functions with weave.op",
     "should_trigger": true,
     "expected": ["weave.init", "@weave.op"]
   },
@@ -15,7 +15,7 @@
     "expected": ["weave.Evaluation", "weave.op", "scorer"]
   },
   {
-    "query": "LLM 출력 품질을 hallucination scorer로 평가하고 싶어",
+    "query": "Evaluate my LLM output quality with a hallucination scorer",
     "should_trigger": true,
     "expected": ["HallucinationFreeScorer", "model_id", "weave.Evaluation"]
   },
@@ -25,7 +25,7 @@
     "expected": ["weave.Dataset", "weave.publish"]
   },
   {
-    "query": "OpenAI API 호출을 Weave로 자동 추적하려면 어떻게 해?",
+    "query": "How do I auto-trace OpenAI API calls with Weave?",
     "should_trigger": true,
     "expected": ["weave.init", "openai", "auto-patch"]
   },
@@ -35,7 +35,7 @@
     "expected": ["weave.Scorer", "weave.op", "score"]
   },
   {
-    "query": "weave.Model로 프롬프트 버전 관리하면서 평가 비교하고 싶어",
+    "query": "I want to version prompts with weave.Model and compare evaluations",
     "should_trigger": true,
     "expected": ["weave.Model", "predict", "weave.Evaluation"]
   },
@@ -45,7 +45,7 @@
     "expected": ["weave.init", "langchain"]
   },
   {
-    "query": "내 RAG 파이프라인 각 단계별 latency를 추적하고 싶어",
+    "query": "I want to trace the latency of each step in my RAG pipeline",
     "should_trigger": true,
     "expected": ["@weave.op", "nested", "trace"]
   },
@@ -55,7 +55,7 @@
     "expected": ["weave.StringPrompt", "weave.publish", "format"]
   },
   {
-    "query": "프롬프트 템플릿을 파라미터화해서 버전 관리하고 싶어",
+    "query": "I want to parameterize and version my prompt templates",
     "should_trigger": true,
     "expected": ["weave.StringPrompt", "weave.MessagesPrompt", "format"]
   },
@@ -70,7 +70,7 @@
     "expected": ["apply_scorer", "OpenAIModerationScorer", "guardrail"]
   },
   {
-    "query": "가드레일로 유해 콘텐츠 차단하고 싶어",
+    "query": "I want to block harmful content with guardrails",
     "should_trigger": true,
     "expected": ["apply_scorer", "guardrail", "passed"]
   },
@@ -80,7 +80,7 @@
     "expected": ["feedback", "add_reaction", "add_note"]
   },
   {
-    "query": "LLM 출력에 사람이 직접 어노테이션하고 싶어",
+    "query": "I want to manually annotate LLM outputs with human review",
     "should_trigger": true,
     "expected": ["AnnotationSpec", "weave.publish", "annotation"]
   },
@@ -90,7 +90,7 @@
     "expected": ["add_cost", "query_costs"]
   },
   {
-    "query": "내 커스텀 모델의 비용을 추적하고 싶어",
+    "query": "I want to track costs for my custom model",
     "should_trigger": true,
     "expected": ["add_cost", "prompt_token_cost", "completion_token_cost"]
   },
@@ -110,9 +110,94 @@
     "expected": ["weave.init", "dspy"]
   },
   {
-    "query": "CrewAI 에이전트 호출을 Weave로 트레이싱하고 싶어",
+    "query": "I want to trace my CrewAI agent calls with Weave",
     "should_trigger": true,
     "expected": ["weave.init", "crewai"]
+  },
+  {
+    "query": "Add Weave to my existing LLM application",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "integration plan", "weave.init"]
+  },
+  {
+    "query": "Apply Weave to my app",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "integration plan", "weave.init"]
+  },
+  {
+    "query": "Integrate Weave tracing into my current project",
+    "should_trigger": true,
+    "expected": ["scan", "@weave.op", "weave.init"]
+  },
+  {
+    "query": "I want to integrate Weave into my existing project",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Instrument my FastAPI app with Weave observability",
+    "should_trigger": true,
+    "expected": ["weave.init", "lifespan", "@weave.op", "FastAPI"]
+  },
+  {
+    "query": "Add Weave to my LangChain app",
+    "should_trigger": true,
+    "expected": ["weave.init", "langchain", "auto-patch"]
+  },
+  {
+    "query": "I have an existing RAG pipeline, add Weave tracing to it",
+    "should_trigger": true,
+    "expected": ["@weave.op", "weave.init", "pipeline"]
+  },
+  {
+    "query": "Convert my model class to use weave.Model",
+    "should_trigger": true,
+    "expected": ["weave.Model", "predict", "type annotations"]
+  },
+  {
+    "query": "I want to convert my existing eval code to Weave Evaluation",
+    "should_trigger": true,
+    "expected": ["weave.Evaluation", "weave.Dataset", "scorer"]
+  },
+  {
+    "query": "Set up Weave in my CrewAI agent project",
+    "should_trigger": true,
+    "expected": ["weave.init", "crewai", "auto-patch"]
+  },
+  {
+    "query": "Help me retrofit Weave into my production chatbot",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op", "integration plan"]
+  },
+  {
+    "query": "Add Weave monitoring to my Streamlit app",
+    "should_trigger": true,
+    "expected": ["weave.init", "streamlit"]
+  },
+  {
+    "query": "I want to add observability to my existing OpenAI calls",
+    "should_trigger": true,
+    "expected": ["weave.init", "auto-patch", "openai"]
+  },
+  {
+    "query": "Hook Weave into my existing code",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Add Weave to my Django app that uses Anthropic",
+    "should_trigger": true,
+    "expected": ["weave.init", "django", "anthropic"]
+  },
+  {
+    "query": "Set up Weave in my OpenAI Agents SDK project",
+    "should_trigger": true,
+    "expected": ["weave.init", "WeaveTracingProcessor", "set_trace_processors"]
+  },
+  {
+    "query": "Onboard my team's app to Weave",
+    "should_trigger": true,
+    "expected": ["weave.init", "integration plan"]
   },
   {
     "query": "How do I deploy a Flask app on AWS?",
@@ -123,7 +208,7 @@
     "should_trigger": false
   },
   {
-    "query": "wandb.init으로 학습 실험 추적하고 싶어",
+    "query": "Track my training experiments with wandb.init",
     "should_trigger": false
   },
   {

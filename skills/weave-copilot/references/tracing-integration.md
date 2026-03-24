@@ -1,102 +1,8 @@
 # Tracing Integration Reference
 
-How to add `weave.init()` and `@weave.op()` to existing code with minimal changes.
+How to add `@weave.op()` to existing code with minimal changes.
 
-## Adding `weave.init()`
-
-Place `weave.init()` at the app's entrypoint, **before any LLM calls or decorated functions are invoked**.
-
-### Script / CLI app
-
-```python
-# BEFORE
-def main():
-    result = generate("Hello")
-    print(result)
-
-if __name__ == "__main__":
-    main()
-```
-
-```python
-# AFTER
-import weave  # Add import at top of file
-
-def main():
-    weave.init('team/project')  # Add as first line in main
-    result = generate("Hello")
-    print(result)
-
-if __name__ == "__main__":
-    main()
-```
-
-### FastAPI
-
-```python
-# BEFORE
-from fastapi import FastAPI
-app = FastAPI()
-
-@app.get("/chat")
-async def chat(query: str):
-    return {"response": await generate(query)}
-```
-
-```python
-# AFTER
-import weave  # Add import
-from fastapi import FastAPI
-from contextlib import asynccontextmanager
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    weave.init('team/project')  # Init during startup
-    yield
-
-app = FastAPI(lifespan=lifespan)
-
-@app.get("/chat")
-async def chat(query: str):
-    return {"response": await generate(query)}
-```
-
-### Streamlit
-
-```python
-# BEFORE
-import streamlit as st
-st.title("My Chat App")
-response = generate(st.text_input("Ask:"))
-```
-
-```python
-# AFTER
-import weave  # Add import
-import streamlit as st
-
-weave.init('team/project')  # Add at top, before any UI code
-
-st.title("My Chat App")
-response = generate(st.text_input("Ask:"))
-```
-
-### Flask
-
-```python
-# BEFORE
-from flask import Flask
-app = Flask(__name__)
-```
-
-```python
-# AFTER
-import weave  # Add import
-from flask import Flask
-
-app = Flask(__name__)
-weave.init('team/project')  # Add after app creation
-```
+For `weave.init()` placement by framework, see `framework-specific.md`.
 
 ## Adding `@weave.op()` to Functions
 
@@ -203,7 +109,7 @@ import weave  # Add at top of file with other imports
 
 After `weave.init()`, LLM provider calls are **automatically traced** — no decorators needed on provider calls themselves. `@weave.op()` is for **your custom functions** to create a trace tree around the auto-patched calls.
 
-Auto-patched providers: OpenAI, Anthropic, LiteLLM, Google GenAI, Cohere, Mistral, Groq, Bedrock
+Auto-patched providers: OpenAI, Anthropic, LiteLLM, Google GenAI, Cohere, Mistral, Groq, Cerebras, Together, Bedrock
 
 ## What NOT to Decorate
 

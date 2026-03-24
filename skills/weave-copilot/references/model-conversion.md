@@ -271,9 +271,9 @@ class MyApp(weave.Model):
         return self._client.chat.completions.create(...)
 ```
 
-### Keeping backward compatibility
+### Backward-compatible alias (only if necessary)
 
-If the old method name (`generate`, `answer`, etc.) is called elsewhere, add a simple alias:
+If the old method name (`generate`, `answer`, etc.) is called from many places and updating all call sites is impractical, you can add a temporary alias. **Prefer updating call sites directly** — aliases add indirection and should be removed once all callers are migrated.
 
 ```python
 class MyApp(weave.Model):
@@ -281,7 +281,7 @@ class MyApp(weave.Model):
     def predict(self, input: str) -> str:
         ...
 
-    # Backward-compatible alias
+    # Temporary alias — remove once all callers use predict()
     def generate(self, input: str) -> str:
         return self.predict(input)
 ```

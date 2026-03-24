@@ -44,6 +44,13 @@ After applying all changes, verify:
 - [ ] Prompts are published with `weave.publish(prompt, name="...")`
 - [ ] Format calls pass correct variable names
 
+### Evolve Scenario (adding features to existing Weave project)
+- [ ] No duplicate `weave.init()` calls introduced
+- [ ] New `@weave.op()` decorators are consistent with existing tracing style
+- [ ] New `weave.Model` classes don't conflict with existing ones
+- [ ] Existing traces and evaluations are not broken by new changes
+- [ ] If adding evaluation to an existing `weave.Model`, the `predict` method signature matches dataset columns
+
 ### No Regressions
 - [ ] Application runs without errors
 - [ ] Existing tests still pass
@@ -70,3 +77,5 @@ After applying all changes, verify:
 | Import errors / circular imports | Move `import weave` to top of file; ensure no circular dependencies |
 | `TypeError: predict() missing argument` | Dataset column names must match `predict` parameter names |
 | Async errors | Ensure `@weave.op()` is above `async def`, use `asyncio.run()` for evaluation |
+| Duplicate `weave.init()` (Evolve) | Remove the new one — keep the existing `weave.init()` call |
+| Traces in wrong project (Evolve) | Verify the existing `weave.init()` uses the correct project name |

@@ -290,7 +290,7 @@ class QAModel(weave.Model):
     model_name: str = "gpt-4o"
 
     @weave.op()
-    async def predict(self, question: str) -> str:
+    def predict(self, question: str) -> str:
         client = OpenAI()
         response = client.chat.completions.create(
             model=self.model_name,
