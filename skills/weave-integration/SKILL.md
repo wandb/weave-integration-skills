@@ -88,13 +88,7 @@ If the environment is unclear, say exactly: `I could not determine the environme
 
 ### Phase 1: Codebase Analysis
 
-Read `references/codebase-analysis.md`, then scan the user's project.
-
-**Important**: Check if the project already uses Weave (`import weave`, `weave.init()`, `@weave.op()`, `weave.Model`).
-- If Weave is already present → **Evolve scenario**: identify what's missing and propose additions only
-- If no Weave found → **Fresh integration**: full analysis
-
-List **all** traceable functions, classes, and API calls found — do not filter by priority.
+Read `references/codebase-analysis.md` and follow its steps to scan the project. List **all** traceable functions, classes, and API calls found.
 
 ### Phase 2: Plan File (Approval Gate 1)
 
@@ -123,14 +117,11 @@ Do not treat approval to create `weave_instrumentation.md` as approval to implem
 
 ### Phase 4: Apply Changes
 
-On approval, read the relevant reference files and apply changes:
+On approval:
 
-| Step | Reference file |
-|------|---------------|
-| Setup (`weave.init()` placement) | `references/codebase-analysis.md` (init placement table) |
-| Tracing, Models, Evaluation, Prompts | `references/transformation-patterns.md` |
-
-**Also fetch official docs** using the [Weave Documentation](#weave-documentation) workflow for the specific features being integrated — reference files contain transformation patterns (before/after), while official docs have the latest API details.
+1. **Fetch official docs** using the [Weave Documentation](#weave-documentation) workflow for `weave.init()` placement, tracing, and any features being integrated
+2. **Read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`)
+3. Apply only the checked items from the plan
 
 ### Phase 5: Validation
 
@@ -147,19 +138,16 @@ Guide the user through a real test run:
 
 | File | When to read |
 |------|-------------|
-| `references/codebase-analysis.md` | Phase 1 — scanning the project + `weave.init()` placement |
+| `references/codebase-analysis.md` | Phase 1 — scan guide, evolve vs fresh logic, checkbox criteria |
 | `references/weave-instrumentation-template.md` | Phase 2 — template for the plan file |
-| `references/transformation-patterns.md` | Phase 4 — before/after patterns for tracing, models, evaluation, prompts |
-| `references/integration-checklist.md` | Phase 5 — validation |
+| `references/transformation-patterns.md` | Phase 4 — model conversion patterns (class → `weave.Model`) |
+| `references/integration-checklist.md` | Phase 5 — post-integration validation checklist |
 
 ---
 
 ## Rules
 
-1. **Official docs first** — always fetch from docs.wandb.ai before generating code
+1. **Official docs first** — always fetch from docs.wandb.ai before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
 2. **Two approval gates** — gate 1: create plan, gate 2: implement changes
 3. **Trace first** — list all targets, AI recommends, user opts out
 4. **Preserve existing functionality** — Weave only observes, it must not change app behavior
-5. **Latest APIs only** — use patterns from official docs, not memorized patterns that may be outdated
-6. **No API guessing** — if a feature isn't in the docs, say so rather than fabricating an API
-7. **Reference file role** — integration reference files contain before/after transformation patterns. If they conflict with official docs on specific API details, official docs win.
