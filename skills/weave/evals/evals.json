@@ -1,0 +1,141 @@
+[
+  {
+    "query": "Add Weave tracing to my LLM application",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op"]
+  },
+  {
+    "query": "weave.op으로 내 함수 추적하고 싶어",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op"]
+  },
+  {
+    "query": "Set up an evaluation pipeline for my chatbot with custom scorers",
+    "should_trigger": true,
+    "expected": ["weave.Evaluation", "weave.op", "scorer"]
+  },
+  {
+    "query": "LLM 출력 품질을 hallucination scorer로 평가하고 싶어",
+    "should_trigger": true,
+    "expected": ["HallucinationFreeScorer", "model_id", "weave.Evaluation"]
+  },
+  {
+    "query": "Create a versioned evaluation dataset from my JSON data",
+    "should_trigger": true,
+    "expected": ["weave.Dataset", "weave.publish"]
+  },
+  {
+    "query": "OpenAI API 호출을 Weave로 자동 추적하려면 어떻게 해?",
+    "should_trigger": true,
+    "expected": ["weave.init", "openai", "auto-patch"]
+  },
+  {
+    "query": "Build an LLM-as-judge scorer that evaluates response relevance",
+    "should_trigger": true,
+    "expected": ["weave.Scorer", "weave.op", "score"]
+  },
+  {
+    "query": "weave.Model로 프롬프트 버전 관리하면서 평가 비교하고 싶어",
+    "should_trigger": true,
+    "expected": ["weave.Model", "predict", "weave.Evaluation"]
+  },
+  {
+    "query": "Track my LangChain agent calls with observability",
+    "should_trigger": true,
+    "expected": ["weave.init", "langchain"]
+  },
+  {
+    "query": "내 RAG 파이프라인 각 단계별 latency를 추적하고 싶어",
+    "should_trigger": true,
+    "expected": ["@weave.op", "nested", "trace"]
+  },
+  {
+    "query": "Version my system prompts with Weave",
+    "should_trigger": true,
+    "expected": ["weave.StringPrompt", "weave.publish", "format"]
+  },
+  {
+    "query": "프롬프트 템플릿을 파라미터화해서 버전 관리하고 싶어",
+    "should_trigger": true,
+    "expected": ["weave.StringPrompt", "weave.MessagesPrompt", "format"]
+  },
+  {
+    "query": "Set up a production monitor for my LLM to detect quality issues",
+    "should_trigger": true,
+    "expected": ["monitor", "weave.op", "scoring"]
+  },
+  {
+    "query": "Add content moderation guardrails to my chatbot",
+    "should_trigger": true,
+    "expected": ["apply_scorer", "OpenAIModerationScorer", "guardrail"]
+  },
+  {
+    "query": "가드레일로 유해 콘텐츠 차단하고 싶어",
+    "should_trigger": true,
+    "expected": ["apply_scorer", "guardrail", "passed"]
+  },
+  {
+    "query": "Collect user feedback on LLM responses",
+    "should_trigger": true,
+    "expected": ["feedback", "add_reaction", "add_note"]
+  },
+  {
+    "query": "LLM 출력에 사람이 직접 어노테이션하고 싶어",
+    "should_trigger": true,
+    "expected": ["AnnotationSpec", "weave.publish", "annotation"]
+  },
+  {
+    "query": "Track and calculate my LLM API costs",
+    "should_trigger": true,
+    "expected": ["add_cost", "query_costs"]
+  },
+  {
+    "query": "내 커스텀 모델의 비용을 추적하고 싶어",
+    "should_trigger": true,
+    "expected": ["add_cost", "prompt_token_cost", "completion_token_cost"]
+  },
+  {
+    "query": "Validate that my LLM output is valid JSON",
+    "should_trigger": true,
+    "expected": ["ValidJSONScorer", "weave.Evaluation"]
+  },
+  {
+    "query": "Add PII detection to block sensitive information in responses",
+    "should_trigger": true,
+    "expected": ["PIIDetection", "apply_scorer", "guardrail"]
+  },
+  {
+    "query": "Set up my DSPy pipeline with Weave tracing",
+    "should_trigger": true,
+    "expected": ["weave.init", "dspy"]
+  },
+  {
+    "query": "CrewAI 에이전트 호출을 Weave로 트레이싱하고 싶어",
+    "should_trigger": true,
+    "expected": ["weave.init", "crewai"]
+  },
+  {
+    "query": "How do I deploy a Flask app on AWS?",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me set up LangSmith tracing for my LLM app",
+    "should_trigger": false
+  },
+  {
+    "query": "wandb.init으로 학습 실험 추적하고 싶어",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a Python unit test with pytest",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a React dashboard for data visualization",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up MLflow model registry",
+    "should_trigger": false
+  }
+]

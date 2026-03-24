@@ -1,0 +1,115 @@
+[
+  {
+    "query": "Add Weave to my existing LLM application",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "integration plan", "weave.init"]
+  },
+  {
+    "query": "내 앱에 Weave 적용해줘",
+    "should_trigger": true,
+    "expected": ["코드 분석", "integration plan", "weave.init"]
+  },
+  {
+    "query": "Integrate Weave tracing into my current project",
+    "should_trigger": true,
+    "expected": ["scan", "@weave.op", "weave.init"]
+  },
+  {
+    "query": "기존 프로젝트에 Weave를 연동하고 싶어",
+    "should_trigger": true,
+    "expected": ["분석", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Instrument my FastAPI app with Weave observability",
+    "should_trigger": true,
+    "expected": ["weave.init", "lifespan", "@weave.op", "FastAPI"]
+  },
+  {
+    "query": "내 LangChain 앱에 Weave를 추가해줘",
+    "should_trigger": true,
+    "expected": ["weave.init", "langchain", "auto-patch"]
+  },
+  {
+    "query": "I have an existing RAG pipeline, add Weave tracing to it",
+    "should_trigger": true,
+    "expected": ["@weave.op", "weave.init", "pipeline"]
+  },
+  {
+    "query": "Convert my model class to use weave.Model",
+    "should_trigger": true,
+    "expected": ["weave.Model", "predict", "type annotations"]
+  },
+  {
+    "query": "기존 평가 코드를 Weave Evaluation으로 전환하고 싶어",
+    "should_trigger": true,
+    "expected": ["weave.Evaluation", "weave.Dataset", "scorer"]
+  },
+  {
+    "query": "Set up Weave in my CrewAI agent project",
+    "should_trigger": true,
+    "expected": ["weave.init", "crewai", "auto-patch"]
+  },
+  {
+    "query": "Help me retrofit Weave into my production chatbot",
+    "should_trigger": true,
+    "expected": ["weave.init", "@weave.op", "integration plan"]
+  },
+  {
+    "query": "내 Streamlit 앱에 Weave 모니터링을 적용해줘",
+    "should_trigger": true,
+    "expected": ["weave.init", "streamlit"]
+  },
+  {
+    "query": "I want to add observability to my existing OpenAI calls",
+    "should_trigger": true,
+    "expected": ["weave.init", "auto-patch", "openai"]
+  },
+  {
+    "query": "기존 코드에 Weave 붙여줘",
+    "should_trigger": true,
+    "expected": ["codebase analysis", "weave.init", "@weave.op"]
+  },
+  {
+    "query": "Add Weave to my Django app that uses Anthropic",
+    "should_trigger": true,
+    "expected": ["weave.init", "django", "anthropic"]
+  },
+  {
+    "query": "내 OpenAI Agents SDK 프로젝트에 Weave 적용",
+    "should_trigger": true,
+    "expected": ["weave.init", "WeaveTracingProcessor", "set_trace_processors"]
+  },
+  {
+    "query": "Onboard my team's app to Weave",
+    "should_trigger": true,
+    "expected": ["weave.init", "integration plan"]
+  },
+  {
+    "query": "Create a new Weave evaluation from scratch",
+    "should_trigger": false
+  },
+  {
+    "query": "weave.op으로 새 함수를 만들어줘",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a HallucinationFreeScorer for my app",
+    "should_trigger": false
+  },
+  {
+    "query": "How do I deploy a Flask app on AWS?",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up MLflow experiment tracking",
+    "should_trigger": false
+  },
+  {
+    "query": "wandb.init으로 학습 실험 추적하고 싶어",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a Python unit test with pytest",
+    "should_trigger": false
+  }
+]
