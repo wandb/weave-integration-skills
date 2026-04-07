@@ -85,8 +85,8 @@ skills/weave-integration/
 
 ```bash
 # Clone the repo
-git clone https://github.com/wandb/weave-integration-skills-hackathon.git
-cd weave-integration-skills-hackathon
+git clone https://github.com/wandb/weave-integration-skills.git
+cd weave-integration-skills
 
 # Claude Code
 cp -r skills/weave-integration/ ~/.claude/skills/weave-integration/

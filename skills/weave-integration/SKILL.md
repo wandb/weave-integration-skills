@@ -4,7 +4,7 @@ description: Comprehensive skill for adding W&B Weave to existing applications. 
 ---
 <!--
 Package: weave-integration
-Repository: wandb/weave-integration-skills-hackathon
+Repository: wandb/weave-integration-skills
 Scope: W&B Weave integration for existing applications
 -->
 
