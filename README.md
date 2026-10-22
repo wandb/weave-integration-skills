@@ -1,6 +1,8 @@
 # Weave Integration Skill
 
-AI coding agent skill for integrating [W&B Weave](https://docs.wandb.ai/weave) into existing applications — trace-first instrumentation with minimal code changes.
+AI coding agent skill for integrating [W&B Weave](https://docs.coreweave.com/products/wandb/weave) into existing applications — trace-first instrumentation with minimal code changes.
+
+For supported agent conversations, start with the [Agent Lens integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations?utm_source=github&utm_medium=referral&utm_campaign=agent-lens-integrations-2026q4&utm_content=weave-integration-skills-readme). The skill selects the required SDK or plugin and verifies conversation grouping. The decorator workflow below applies to Weave Calls and evaluations.
 
 ## What It Does
 
@@ -40,9 +42,9 @@ Analyzes an existing codebase, creates a collaborative integration plan, and app
 
 ### Phase 4: Apply Changes                         
 - official docs + transformation-patterns.md
-1. Add weave.init() at the app entrypoint
-2. Decorate checked functions with @weave.op()
-3. Convert checked classes to weave.Model
+1. Follow the selected Agent Lens guide for agent conversations, including session grouping.
+2. For Weave Calls, add weave.init() and decorate the checked functions with @weave.op().
+3. Convert checked classes to weave.Model only where the approved evaluation or Calls plan requires it.
 
 <img width="661" height="610" alt="image" src="https://github.com/user-attachments/assets/77622672-046c-4118-ba45-553362df9c63" />
 
@@ -53,7 +55,13 @@ Analyzes an existing codebase, creates a collaborative integration plan, and app
 3. Ask if weave_instrumentation.md should be kept or deleted
 <img width="498" height="456" alt="image" src="https://github.com/user-attachments/assets/203fb623-c0fd-4b91-9dee-d386fa04870b" />
 
-### Result
+### Result: Agent Lens workflow
+
+![ADK conversation in Agent Lens with the calculator tool's input and output expanded](assets/agent-lens/2026-10/adk-tool-detail.png)
+
+Captured October 22, 2026 with ADK 2.12.0 and Weave 0.53.12. This example uses scripted model responses, real ADK tool execution, and real Agent Lens export. Use the matching integration guide to verify your application's turns and tools.
+
+### Result: Weave Calls workflow
 <img width="1459" height="819" alt="image" src="https://github.com/user-attachments/assets/c2d52d5c-818f-4ee1-8dba-ece2204b7bbe" />
 
 ### Key principles
@@ -77,7 +85,7 @@ skills/weave-integration/
 
 ## Prerequisites
 
-- Python 3.8+
+- Python 3.10+
 - `pip install weave`
 - `wandb login` or set `WANDB_API_KEY` environment variable
 
@@ -108,10 +116,10 @@ cp -r skills/ .claude/skills/
 
 ## Documentation
 
-- [W&B Weave](https://docs.wandb.ai/weave) — Product overview
-- [Tracing](https://docs.wandb.ai/weave/guides/tracking/tracing) — LLM app tracing
-- [Evaluation](https://docs.wandb.ai/weave/guides/core-types/evaluations) — Evaluation pipelines
-- [Integrations](https://docs.wandb.ai/weave/guides/integrations/autopatching) — Provider & framework integrations
+- [W&B Weave](https://docs.coreweave.com/products/wandb/weave) — Product overview
+- [Tracing](https://docs.coreweave.com/products/wandb/weave/guides/tracking/tracing) — LLM app tracing
+- [Evaluation](https://docs.coreweave.com/products/wandb/weave/guides/core-types/evaluations) — Evaluation pipelines
+- [Integrations](https://docs.coreweave.com/products/wandb/weave/guides/integrations/autopatching) — Provider & framework integrations
 
 ## License
 

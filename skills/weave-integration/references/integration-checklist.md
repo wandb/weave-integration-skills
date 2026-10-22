@@ -2,6 +2,18 @@
 
 Post-integration validation checks. Run this after Phase 4 (Apply Changes).
 
+## Agent Lens (when selected)
+
+- [ ] The integration is listed in the public Agent Lens chooser, or its compatibility was separately verified.
+- [ ] The package and initialization match that integration's current guide.
+- [ ] Related turns reuse one conversation/session/group ID.
+- [ ] A real run produces a grouped conversation with model and tool spans in Agent Lens.
+- [ ] Any screenshots come from that integration and state the tested version.
+- [ ] Runtime links encode identifiers and do not contain UTMs.
+- [ ] Existing Calls and evaluation behavior remains covered where the application uses it.
+
+The following setup and decorator checks apply to Weave Calls and evaluations.
+
 ## Setup
 
 - [ ] `import weave` is present in all modified files

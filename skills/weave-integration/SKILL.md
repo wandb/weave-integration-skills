@@ -17,6 +17,18 @@ Use this skill to integrate W&B Weave into an existing codebase with minimal beh
 - Run this skill only when it is explicitly mentioned by name.
 - Default invocation: `@skills weave-integration`
 
+## Select the tracing destination
+
+Before planning instrumentation, identify whether the user needs agent conversations,
+Weave function calls, or evaluations. Record the destination and grouping mechanism
+in the plan.
+
+- For supported agent workflows, follow the [Agent Lens integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations).
+- Provider SDKs use the Forge SDK (`coreweave` in Python, `@coreweave/forge-sdk` in TypeScript) with a conversation wrapper. Agent SDKs and Pi still use Weave where their guide specifies it. Harnesses use the matching plugin.
+- Reuse the framework's session or group identifier across turns. Verify a multi-turn conversation with model and tool spans before declaring the integration complete.
+- Apply the function decorators and model-conversion references below only to the selected Weave Calls or evaluation work. They do not establish Agent Lens compatibility.
+- Keep unlisted frameworks on their existing supported path until their Agent Lens rendering has been verified.
+
 ## Weave Documentation
 
 Use the Weave docs before making implementation decisions.
@@ -26,15 +38,15 @@ Use the Weave docs before making implementation decisions.
 Start with the root documentation index:
 
 ```bash
-curl -s https://docs.wandb.ai/llms.txt
+curl -s https://docs.coreweave.com/llms.txt
 ```
 
-Important quirk: `llms.txt` covers all W&B docs, not only Weave. Filter for `/weave/`, `https://docs.wandb.ai/weave`, or titles containing `W&B Weave`.
+Important quirk: `llms.txt` covers all W&B docs, not only Weave. Filter for `/weave/`, `https://docs.coreweave.com/products/wandb/weave`, or titles containing `W&B Weave`.
 
 If you prefer browsing first, start from:
 
 ```text
-https://docs.wandb.ai/weave
+https://docs.coreweave.com/products/wandb/weave
 ```
 
 ### 2. Fetch Specific Pages as Markdown
@@ -44,9 +56,9 @@ Once you know the right page, fetch it as markdown. This is usually the clearest
 Examples:
 
 ```bash
-curl -s https://docs.wandb.ai/weave/quickstart.md
-curl -s https://docs.wandb.ai/weave/guides/tracking/querying-calls.md
-curl -s https://docs.wandb.ai/weave/reference/service-api.md
+curl -s https://docs.coreweave.com/products/wandb/weave/quickstart.md
+curl -s https://docs.coreweave.com/products/wandb/weave/guides/tracking/querying-calls.md
+curl -s https://docs.coreweave.com/products/wandb/weave/reference/service-api.md
 ```
 
 Use these pages intentionally:
@@ -63,7 +75,7 @@ Use this order:
 
 1. Search `llms.txt` locally with `rg` or `grep`
 2. Fetch the matched Weave page as `.md`
-3. If that is not enough, use native web search with `site:docs.wandb.ai/weave`
+3. If that is not enough, use native web search with `site:docs.coreweave.com/products/wandb/weave`
 
 For ambiguous topics, search both guide pages and API reference pages before concluding.
 
@@ -83,8 +95,8 @@ Confirm the environment:
 2. **Environment detection** — check for `pyproject.toml`, `uv.lock`, `poetry.lock`, `Pipfile`, `requirements.txt` to determine the correct install command
 3. **API key** — confirm `WANDB_API_KEY` is set
 
-If the environment is clear, suggest the correct Weave install command and ask whether it is okay to add Weave there.
-If the environment is unclear, say exactly: `I could not determine the environment setup method.` Then instruct the user to install Weave first before continuing.
+If the environment is clear, suggest the install command required by the selected integration and ask whether it is okay to add that dependency there.
+If the environment is unclear, say exactly: `I could not determine the environment setup method.` Then instruct the user to resolve the package environment first before continuing.
 
 ### Phase 1: Codebase Analysis
 
@@ -120,7 +132,7 @@ Do not treat approval to create `weave_instrumentation.md` as approval to implem
 On approval:
 
 1. **Fetch official docs** using the [Weave Documentation](#weave-documentation) workflow for `weave.init()` placement, tracing, and any features being integrated
-2. **Read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`)
+2. **For Weave Calls or evaluations, read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`). For Agent Lens, apply the selected integration guide and its conversation grouping instead.
 3. Apply only the checked items from the plan
 
 ### Phase 5: Validation
@@ -130,8 +142,8 @@ Read `references/integration-checklist.md` and verify all changes.
 Guide the user through a real test run:
 1. Confirm environment variables are set
 2. Ask the user to run the app
-3. Confirm traces appear in Weave UI
-4. Show the Weave URL  (`https://<WANDB_BASE_URL>/<team>/<project>/weave` or `https://weave.wandb.ai/<team>/<project>/weave`) and ask the user to explore the traces
+3. Confirm the output in the selected product: grouped conversations in Agent Lens, or Calls/evaluation results in Weave
+4. For Agent Lens SaaS, open `https://forge.coreweave.com/agent-lens/<team>/<project>` and select **Conversations**. Encode path segments and keep runtime links free of tracking parameters. For custom deployments or Weave Calls, use the URL supplied by that deployment or SDK.
 5. Ask if `weave_instrumentation.md` should be kept or deleted
 
 ### Reference Files
@@ -147,7 +159,7 @@ Guide the user through a real test run:
 
 ## Rules
 
-1. **Official docs first** — always fetch from docs.wandb.ai before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
+1. **Official docs first** — always fetch from docs.coreweave.com before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
 2. **Two approval gates** — gate 1: create plan, gate 2: implement changes
 3. **Trace first** — list all targets, AI recommends, user opts out
 4. **Preserve existing functionality** — Weave only observes, it must not change app behavior
