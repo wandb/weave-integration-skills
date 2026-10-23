@@ -1,16 +1,16 @@
 ---
 name: weave-integration
-description: Comprehensive skill for adding W&B Weave to existing applications. Covers trace-first instrumentation, evaluation only after trace verification, documentation-first implementation, CLI-based Weave data access, and validation workflows. Activate this skill only when the user explicitly mentions the skill by name, such as `weave-integration`, `@skills weave-integration`, or another direct skill reference. Do not auto-trigger from generic Weave or W&B questions.
+description: Add CoreWeave Agent Lens to supported agent applications using the matching SDK or plugin and conversation grouping. Also maintains existing function-tracing and evaluation workflows. Activate this skill only when the user explicitly mentions the skill by name, such as `weave-integration`, `@skills weave-integration`, or another direct skill reference. Do not auto-trigger from generic product questions.
 ---
 <!--
 Package: weave-integration
 Repository: wandb/weave-integration-skills
-Scope: W&B Weave integration for existing applications
+Scope: Agent Lens instrumentation and existing function-tracing workflows
 -->
 
-# W&B Weave Integration Skill
+# Agent Lens Integration Skill
 
-Use this skill to integrate W&B Weave into an existing codebase with minimal behavioral change.
+Use this skill to record supported agent conversations in CoreWeave Agent Lens with minimal behavioral change. Follow the matching integration guide for the package, setup, and grouping mechanism.
 
 ## Activation
 
@@ -29,9 +29,9 @@ in the plan.
 - Apply the function decorators and model-conversion references below only to the selected Weave Calls or evaluation work. They do not establish Agent Lens compatibility.
 - Keep unlisted frameworks on their existing supported path until their Agent Lens rendering has been verified.
 
-## Weave Documentation
+## Integration Documentation
 
-Use the Weave docs before making implementation decisions.
+Use the selected integration's public documentation before making implementation decisions. For Agent Lens, start with the [integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations) and fetch the matching guide. Use the function-tracing documentation below only for an explicitly selected Calls or evaluation task.
 
 ### 1. Find the Right Page
 
@@ -91,7 +91,7 @@ Follow these 6 phases strictly. **Never modify user code without presenting a pl
 
 Confirm the environment:
 
-1. **Weave project name** — ask for `'team/project'` format
+1. **Destination project** — ask for `'team/project'` format
 2. **Environment detection** — check for `pyproject.toml`, `uv.lock`, `poetry.lock`, `Pipfile`, `requirements.txt` to determine the correct install command
 3. **API key** — confirm `WANDB_API_KEY` is set
 
@@ -131,7 +131,7 @@ Do not treat approval to create `weave_instrumentation.md` as approval to implem
 
 On approval:
 
-1. **Fetch official docs** using the [Weave Documentation](#weave-documentation) workflow for `weave.init()` placement, tracing, and any features being integrated
+1. **Fetch official docs** using the [Integration Documentation](#integration-documentation) workflow for the selected SDK or plugin, initialization, and conversation grouping
 2. **For Weave Calls or evaluations, read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`). For Agent Lens, apply the selected integration guide and its conversation grouping instead.
 3. Apply only the checked items from the plan
 
