@@ -1,117 +1,50 @@
-# Weave Integration Skill
+# Agent Lens integration skill
 
-AI coding agent skill for integrating [W&B Weave](https://docs.wandb.ai/weave) into existing applications — trace-first instrumentation with minimal code changes.
+Record supported agent conversations in **CoreWeave Agent Lens**. This skill inspects your application, selects the matching SDK or plugin, and verifies that turns, model calls, and tool calls appear in the same conversation.
 
-## What It Does
+[Choose an Agent Lens integration](https://docs.coreweave.com/products/agent-lens/get-started/integrations?utm_source=github&utm_medium=referral&utm_campaign=agent-lens-integrations-2026q4&utm_content=weave-integration-skills-readme).
 
-Analyzes an existing codebase, creates a collaborative integration plan, and applies Weave tracing with user approval at every step.
+## Install and invoke
 
-- Scan for all functions, LLM calls, model classes, and frameworks
-- Create `weave_instrumentation.md` with checkbox-based trace map
-- AI pre-checks recommended targets, user opts out of what they don't need
-- Two explicit approval gates before any code is modified
-
-## How It Works
-### Phase 0: Project Setup
-- Confirm project name, environment, API key
-<img width="1465" height="772" alt="image" src="https://github.com/user-attachments/assets/0992ddfd-7933-423e-872f-95f8b185c188" />
-
-### Phase 1: Codebase Analysis                     
-- codebase-analysis.md
-1. Scan for ALL functions, classes, API calls
-2. Detect frameworks (FastAPI, LangChain, CrewAI, etc.)
-3. Check if Weave is already partially integrated
-<img width="441" height="594" alt="image" src="https://github.com/user-attachments/assets/95368430-ae57-44a5-9cc7-488b8b018dce" />
-
-
-### Phase 2: Plan File ⏸ APPROVAL GATE 1          
-- weave-instrumentation-template.md
-1. Ask: "Create weave_instrumentation.md?"
-2. List ALL traceable targets with checkboxes
-3. AI pre-checks [x] recommended, leaves [ ] others
-4. User reviews and unchecks what they don't want
-<img width="1190" height="588" alt="image" src="https://github.com/user-attachments/assets/d08d6545-4302-44ff-a4d4-ff7383ed8035" />
-
-### Phase 3: Review ⏸ APPROVAL GATE 2
-- Ask: "Approve this plan for implementation?"
-- Do NOT proceed without explicit approval
-<img width="657" height="642" alt="image" src="https://github.com/user-attachments/assets/197760ef-5603-45ee-8ed2-5f8c791a2a93" />
-
-
-### Phase 4: Apply Changes                         
-- official docs + transformation-patterns.md
-1. Add weave.init() at the app entrypoint
-2. Decorate checked functions with @weave.op()
-3. Convert checked classes to weave.Model
-
-<img width="661" height="610" alt="image" src="https://github.com/user-attachments/assets/77622672-046c-4118-ba45-553362df9c63" />
-
-### Phase 5: Validation                           
-- integration-checklist.md
-1. Run integration checklist (setup, tracing, models, eval)
-2. Guide user through test run + Weave UI verification
-3. Ask if weave_instrumentation.md should be kept or deleted
-<img width="498" height="456" alt="image" src="https://github.com/user-attachments/assets/203fb623-c0fd-4b91-9dee-d386fa04870b" />
-
-### Result
-<img width="1459" height="819" alt="image" src="https://github.com/user-attachments/assets/c2d52d5c-818f-4ee1-8dba-ece2204b7bbe" />
-
-### Key principles
-- **Trace first** — list everything, user opts out
-- **Two approval gates** — plan creation and implementation are separate approvals
-- **No code changes without explicit approval**
-
-## Skill Structure
-
-```
-skills/weave-integration/
-├── SKILL.md                                # Integration workflow, docs lookup, rules
-├── evals/
-│   └── evals.json                          # Test cases for skill trigger evaluation
-└── references/
-    ├── codebase-analysis.md                # Scan guide, evolve vs fresh logic, checkbox criteria
-    ├── weave-instrumentation-template.md   # Template for weave_instrumentation.md plan file
-    ├── transformation-patterns.md          # Model conversion patterns (class → weave.Model)
-    └── integration-checklist.md            # Post-integration validation checklist
-```
-
-## Prerequisites
-
-- Python 3.8+
-- `pip install weave`
-- `wandb login` or set `WANDB_API_KEY` environment variable
-
-## Installation
+From your application root, install the skill using its existing repository and identifier, `weave-integration`:
 
 ```bash
-# Clone the repo
 git clone https://github.com/wandb/weave-integration-skills.git
-cd weave-integration-skills
-
-# Claude Code
-cp -r skills/weave-integration/ ~/.claude/skills/weave-integration/
-
-# Cursor
-cp -r skills/weave-integration/ ~/.cursor/skills/weave-integration/
-
-# Project-level (any agent)
-cp -r skills/ .claude/skills/
+mkdir -p .claude/skills
+cp -r weave-integration-skills/skills/weave-integration .claude/skills/
 ```
 
-## Example Prompts
+Invoke `@skills weave-integration` in that application. The skill runs only when explicitly invoked.
 
-- "Add Weave to my existing app"
-- "Instrument my FastAPI app with Weave"
-- "Integrate Weave into my LangChain project"
-- "Add Weave to my OpenAI Agents SDK project"
-- "Retrofit Weave tracing into my production chatbot"
+Example requests:
+
+- “Use weave-integration to add Agent Lens to my Google ADK agent.”
+- “Use weave-integration to trace my OpenAI Agents SDK conversation in Agent Lens.”
+- “Use weave-integration to verify that my agent's turns and tools are grouped correctly.”
+
+## What the skill does
+
+1. Identify the provider SDK, agent framework, or coding-agent plugin and select its Agent Lens guide.
+2. Inspect dependencies and configuration, and prepare an instrumentation plan for review.
+3. Apply the approved changes using the package and grouping mechanism documented for that integration.
+4. Run a multi-turn example and inspect the resulting conversation in Agent Lens.
+
+The guide determines the required package. Some framework integrations use `weave`; provider SDK integrations use the Forge SDK. A function decorator alone does not establish Agent Lens conversation support.
+
+The skill retains its existing plan and implementation approval steps. Its function-tracing and evaluation references remain available for tasks that explicitly request those workflows.
+
+## Example result
+
+![Google ADK conversation in Agent Lens showing calculator arguments and its result](assets/agent-lens/2026-10/adk-tool-detail.png)
+
+Captured October 22, 2026 with ADK 2.12.0 and `weave` 0.53.12. Model responses are scripted; ADK tool execution, export, and the Agent Lens UI are real. This image demonstrates the ADK example. Validate other integrations with their own guides and runs.
 
 ## Documentation
 
-- [W&B Weave](https://docs.wandb.ai/weave) — Product overview
-- [Tracing](https://docs.wandb.ai/weave/guides/tracking/tracing) — LLM app tracing
-- [Evaluation](https://docs.wandb.ai/weave/guides/core-types/evaluations) — Evaluation pipelines
-- [Integrations](https://docs.wandb.ai/weave/guides/integrations/autopatching) — Provider & framework integrations
+- [Agent Lens integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations)
+- [Google ADK guide](https://docs.coreweave.com/products/agent-lens/integrations/google-adk)
+- [OpenAI Agents SDK guide](https://docs.coreweave.com/products/agent-lens/integrations/openai-agents-sdk)
+- [Inspect conversations](https://docs.coreweave.com/products/agent-lens/conversations/view-activity)
 
 ## License
 

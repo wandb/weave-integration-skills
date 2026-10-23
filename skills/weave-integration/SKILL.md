@@ -1,40 +1,52 @@
 ---
 name: weave-integration
-description: Comprehensive skill for adding W&B Weave to existing applications. Covers trace-first instrumentation, evaluation only after trace verification, documentation-first implementation, CLI-based Weave data access, and validation workflows. Activate this skill only when the user explicitly mentions the skill by name, such as `weave-integration`, `@skills weave-integration`, or another direct skill reference. Do not auto-trigger from generic Weave or W&B questions.
+description: Add CoreWeave Agent Lens to supported agent applications using the matching SDK or plugin and conversation grouping. Also maintains existing function-tracing and evaluation workflows. Activate this skill only when the user explicitly mentions the skill by name, such as `weave-integration`, `@skills weave-integration`, or another direct skill reference. Do not auto-trigger from generic product questions.
 ---
 <!--
 Package: weave-integration
 Repository: wandb/weave-integration-skills
-Scope: W&B Weave integration for existing applications
+Scope: Agent Lens instrumentation and existing function-tracing workflows
 -->
 
-# W&B Weave Integration Skill
+# Agent Lens Integration Skill
 
-Use this skill to integrate W&B Weave into an existing codebase with minimal behavioral change.
+Use this skill to record supported agent conversations in CoreWeave Agent Lens with minimal behavioral change. Follow the matching integration guide for the package, setup, and grouping mechanism.
 
 ## Activation
 
 - Run this skill only when it is explicitly mentioned by name.
 - Default invocation: `@skills weave-integration`
 
-## Weave Documentation
+## Select the tracing destination
 
-Use the Weave docs before making implementation decisions.
+Before planning instrumentation, identify whether the user needs agent conversations,
+Weave function calls, or evaluations. Record the destination and grouping mechanism
+in the plan.
+
+- For supported agent workflows, follow the [Agent Lens integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations).
+- Provider SDKs use the Forge SDK (`coreweave` in Python, `@coreweave/forge-sdk` in TypeScript) with a conversation wrapper. Agent SDKs and Pi use the `weave` package where their guide specifies it. Harnesses use the matching plugin.
+- Reuse the framework's session or group identifier across turns. Verify a multi-turn conversation with model and tool spans before declaring the integration complete.
+- Apply the function decorators and model-conversion references below only to the selected Weave Calls or evaluation work. They do not establish Agent Lens compatibility.
+- For an unlisted framework, state that its Agent Lens path needs qualification. Do not claim compatibility from an existing function-tracing adapter.
+
+## Integration Documentation
+
+Use the selected integration's public documentation before making implementation decisions. For Agent Lens, start with the [integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations) and fetch the matching guide. Use the function-tracing documentation below only for an explicitly selected Calls or evaluation task.
 
 ### 1. Find the Right Page
 
-Start with the root documentation index:
+Fetch the matching Agent Lens guide selected above. If you need to locate it, use the root documentation index:
 
 ```bash
-curl -s https://docs.wandb.ai/llms.txt
+curl -s https://docs.coreweave.com/llms.txt
 ```
 
-Important quirk: `llms.txt` covers all W&B docs, not only Weave. Filter for `/weave/`, `https://docs.wandb.ai/weave`, or titles containing `W&B Weave`.
+The index covers the whole CoreWeave documentation site. For Agent Lens, filter for `/products/agent-lens/`. Filter for `/products/wandb/weave/` only when the user explicitly selected a Calls or evaluation task.
 
 If you prefer browsing first, start from:
 
 ```text
-https://docs.wandb.ai/weave
+https://docs.coreweave.com/products/agent-lens/get-started/integrations
 ```
 
 ### 2. Fetch Specific Pages as Markdown
@@ -44,26 +56,24 @@ Once you know the right page, fetch it as markdown. This is usually the clearest
 Examples:
 
 ```bash
-curl -s https://docs.wandb.ai/weave/quickstart.md
-curl -s https://docs.wandb.ai/weave/guides/tracking/querying-calls.md
-curl -s https://docs.wandb.ai/weave/reference/service-api.md
+curl -s https://docs.coreweave.com/products/agent-lens/integrations/google-adk.md
+curl -s https://docs.coreweave.com/products/agent-lens/integrations/openai-agents-sdk.md
+curl -s https://docs.coreweave.com/products/agent-lens/get-started/custom-agents.md
 ```
 
 Use these pages intentionally:
 
-- `quickstart.md` for current setup patterns
-- `guides/tracking/querying-calls.md` for trace inspection and query patterns
-- `reference/service-api.md` when the task involves programmatic or CLI-driven access to Weave data
+- The matching integration guide for released package names, setup, and conversation grouping
+- The custom-agents guide when the user is instrumenting their own agent
+- The selected product's API reference when the task requires programmatic data access
 
 ### 3. Search Documentation
-
-There is no documented W&B docs search API to rely on with `curl`.
 
 Use this order:
 
 1. Search `llms.txt` locally with `rg` or `grep`
-2. Fetch the matched Weave page as `.md`
-3. If that is not enough, use native web search with `site:docs.wandb.ai/weave`
+2. Fetch the matching guide as `.md`
+3. If that is not enough, use native web search with `site:docs.coreweave.com/products/agent-lens`; use the Weave documentation scope only for an explicitly selected Calls or evaluation task
 
 For ambiguous topics, search both guide pages and API reference pages before concluding.
 
@@ -71,7 +81,7 @@ For ambiguous topics, search both guide pages and API reference pages before con
 
 ## Integration Workflow
 
-Default to tracing **everything** (all functions, tools, API calls), then let the user opt out. Do not pre-filter or skip functions based on priority. The user decides what to exclude.
+For Agent Lens, use the selected guide's instrumentation boundary and conversation grouping. Do not add function decorators on top of an automatic integration unless the guide requires them. For an explicitly selected function-tracing task, list the traceable functions, tools, and API calls so the user can choose the scope.
 
 Follow these 6 phases strictly. **Never modify user code without presenting a plan first.** There are two explicit approval gates — do not skip them.
 
@@ -79,16 +89,16 @@ Follow these 6 phases strictly. **Never modify user code without presenting a pl
 
 Confirm the environment:
 
-1. **Weave project name** — ask for `'team/project'` format
+1. **Destination project** — ask for `'team/project'` format
 2. **Environment detection** — check for `pyproject.toml`, `uv.lock`, `poetry.lock`, `Pipfile`, `requirements.txt` to determine the correct install command
 3. **API key** — confirm `WANDB_API_KEY` is set
 
-If the environment is clear, suggest the correct Weave install command and ask whether it is okay to add Weave there.
-If the environment is unclear, say exactly: `I could not determine the environment setup method.` Then instruct the user to install Weave first before continuing.
+If the environment is clear, suggest the install command required by the selected integration and ask whether it is okay to add that dependency there.
+If the environment is unclear, say exactly: `I could not determine the environment setup method.` Then instruct the user to resolve the package environment first before continuing.
 
 ### Phase 1: Codebase Analysis
 
-Read `references/codebase-analysis.md` and follow its steps to scan the project. List **all** traceable functions, classes, and API calls found.
+For Agent Lens, identify the agent entry point, provider/framework or harness, existing instrumentation, and the session or group identifier. For a Calls or evaluation task, read `references/codebase-analysis.md` and list the traceable functions, classes, and API calls.
 
 ### Phase 2: Plan File (Approval Gate 1)
 
@@ -119,19 +129,19 @@ Do not treat approval to create `weave_instrumentation.md` as approval to implem
 
 On approval:
 
-1. **Fetch official docs** using the [Weave Documentation](#weave-documentation) workflow for `weave.init()` placement, tracing, and any features being integrated
-2. **Read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`)
+1. **Fetch official docs** using the [Integration Documentation](#integration-documentation) workflow for the selected SDK or plugin, initialization, and conversation grouping
+2. **For Weave Calls or evaluations, read `references/transformation-patterns.md`** for model conversion patterns (class → `weave.Model`). For Agent Lens, apply the selected integration guide and its conversation grouping instead.
 3. Apply only the checked items from the plan
 
 ### Phase 5: Validation
 
-Read `references/integration-checklist.md` and verify all changes.
+For Agent Lens, verify the selected guide's initialization, export destination, and conversation grouping. Check real model and tool spans when the source run uses them. For Calls or evaluations, use `references/integration-checklist.md`.
 
 Guide the user through a real test run:
 1. Confirm environment variables are set
 2. Ask the user to run the app
-3. Confirm traces appear in Weave UI
-4. Show the Weave URL  (`https://<WANDB_BASE_URL>/<team>/<project>/weave` or `https://weave.wandb.ai/<team>/<project>/weave`) and ask the user to explore the traces
+3. Confirm the output in the selected product: grouped conversations in Agent Lens, or Calls/evaluation results in Weave
+4. For Agent Lens SaaS, open `https://forge.coreweave.com/agent-lens/<team>/<project>` and select **Conversations**. Encode path segments and keep runtime links free of tracking parameters. For custom deployments or Weave Calls, use the URL supplied by that deployment or SDK.
 5. Ask if `weave_instrumentation.md` should be kept or deleted
 
 ### Reference Files
@@ -147,7 +157,7 @@ Guide the user through a real test run:
 
 ## Rules
 
-1. **Official docs first** — always fetch from docs.wandb.ai before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
+1. **Official docs first** — always fetch from docs.coreweave.com before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
 2. **Two approval gates** — gate 1: create plan, gate 2: implement changes
 3. **Trace first** — list all targets, AI recommends, user opts out
-4. **Preserve existing functionality** — Weave only observes, it must not change app behavior
+4. **Preserve existing functionality** — instrumentation must not change application behavior
