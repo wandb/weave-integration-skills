@@ -24,10 +24,10 @@ Weave function calls, or evaluations. Record the destination and grouping mechan
 in the plan.
 
 - For supported agent workflows, follow the [Agent Lens integration chooser](https://docs.coreweave.com/products/agent-lens/get-started/integrations).
-- Provider SDKs use the Forge SDK (`coreweave` in Python, `@coreweave/forge-sdk` in TypeScript) with a conversation wrapper. Agent SDKs and Pi still use Weave where their guide specifies it. Harnesses use the matching plugin.
+- Provider SDKs use the Forge SDK (`coreweave` in Python, `@coreweave/forge-sdk` in TypeScript) with a conversation wrapper. Agent SDKs and Pi use the `weave` package where their guide specifies it. Harnesses use the matching plugin.
 - Reuse the framework's session or group identifier across turns. Verify a multi-turn conversation with model and tool spans before declaring the integration complete.
 - Apply the function decorators and model-conversion references below only to the selected Weave Calls or evaluation work. They do not establish Agent Lens compatibility.
-- Keep unlisted frameworks on their existing supported path until their Agent Lens rendering has been verified.
+- For an unlisted framework, state that its Agent Lens path needs qualification. Do not claim compatibility from an existing function-tracing adapter.
 
 ## Integration Documentation
 
@@ -35,18 +35,18 @@ Use the selected integration's public documentation before making implementation
 
 ### 1. Find the Right Page
 
-Start with the root documentation index:
+Fetch the matching Agent Lens guide selected above. If you need to locate it, use the root documentation index:
 
 ```bash
 curl -s https://docs.coreweave.com/llms.txt
 ```
 
-Important quirk: `llms.txt` covers all W&B docs, not only Weave. Filter for `/weave/`, `https://docs.coreweave.com/products/wandb/weave`, or titles containing `W&B Weave`.
+The index covers the whole CoreWeave documentation site. For Agent Lens, filter for `/products/agent-lens/`. Filter for `/products/wandb/weave/` only when the user explicitly selected a Calls or evaluation task.
 
 If you prefer browsing first, start from:
 
 ```text
-https://docs.coreweave.com/products/wandb/weave
+https://docs.coreweave.com/products/agent-lens/get-started/integrations
 ```
 
 ### 2. Fetch Specific Pages as Markdown
@@ -56,26 +56,24 @@ Once you know the right page, fetch it as markdown. This is usually the clearest
 Examples:
 
 ```bash
-curl -s https://docs.coreweave.com/products/wandb/weave/quickstart.md
-curl -s https://docs.coreweave.com/products/wandb/weave/guides/tracking/querying-calls.md
-curl -s https://docs.coreweave.com/products/wandb/weave/reference/service-api.md
+curl -s https://docs.coreweave.com/products/agent-lens/integrations/google-adk.md
+curl -s https://docs.coreweave.com/products/agent-lens/integrations/openai-agents-sdk.md
+curl -s https://docs.coreweave.com/products/agent-lens/get-started/custom-agents.md
 ```
 
 Use these pages intentionally:
 
-- `quickstart.md` for current setup patterns
-- `guides/tracking/querying-calls.md` for trace inspection and query patterns
-- `reference/service-api.md` when the task involves programmatic or CLI-driven access to Weave data
+- The matching integration guide for released package names, setup, and conversation grouping
+- The custom-agents guide when the user is instrumenting their own agent
+- The selected product's API reference when the task requires programmatic data access
 
 ### 3. Search Documentation
-
-There is no documented W&B docs search API to rely on with `curl`.
 
 Use this order:
 
 1. Search `llms.txt` locally with `rg` or `grep`
-2. Fetch the matched Weave page as `.md`
-3. If that is not enough, use native web search with `site:docs.coreweave.com/products/wandb/weave`
+2. Fetch the matching guide as `.md`
+3. If that is not enough, use native web search with `site:docs.coreweave.com/products/agent-lens`; use the Weave documentation scope only for an explicitly selected Calls or evaluation task
 
 For ambiguous topics, search both guide pages and API reference pages before concluding.
 
@@ -83,7 +81,7 @@ For ambiguous topics, search both guide pages and API reference pages before con
 
 ## Integration Workflow
 
-Default to tracing **everything** (all functions, tools, API calls), then let the user opt out. Do not pre-filter or skip functions based on priority. The user decides what to exclude.
+For Agent Lens, use the selected guide's instrumentation boundary and conversation grouping. Do not add function decorators on top of an automatic integration unless the guide requires them. For an explicitly selected function-tracing task, list the traceable functions, tools, and API calls so the user can choose the scope.
 
 Follow these 6 phases strictly. **Never modify user code without presenting a plan first.** There are two explicit approval gates — do not skip them.
 
@@ -100,7 +98,7 @@ If the environment is unclear, say exactly: `I could not determine the environme
 
 ### Phase 1: Codebase Analysis
 
-Read `references/codebase-analysis.md` and follow its steps to scan the project. List **all** traceable functions, classes, and API calls found.
+For Agent Lens, identify the agent entry point, provider/framework or harness, existing instrumentation, and the session or group identifier. For a Calls or evaluation task, read `references/codebase-analysis.md` and list the traceable functions, classes, and API calls.
 
 ### Phase 2: Plan File (Approval Gate 1)
 
@@ -137,7 +135,7 @@ On approval:
 
 ### Phase 5: Validation
 
-Read `references/integration-checklist.md` and verify all changes.
+For Agent Lens, verify the selected guide's initialization, export destination, and conversation grouping. Check real model and tool spans when the source run uses them. For Calls or evaluations, use `references/integration-checklist.md`.
 
 Guide the user through a real test run:
 1. Confirm environment variables are set
@@ -162,4 +160,4 @@ Guide the user through a real test run:
 1. **Official docs first** — always fetch from docs.coreweave.com before generating code. Never guess APIs — if it's not in the docs, say so. If reference files conflict with docs, docs win.
 2. **Two approval gates** — gate 1: create plan, gate 2: implement changes
 3. **Trace first** — list all targets, AI recommends, user opts out
-4. **Preserve existing functionality** — Weave only observes, it must not change app behavior
+4. **Preserve existing functionality** — instrumentation must not change application behavior
